@@ -1,0 +1,142 @@
+---
+import Folio from './Folio.astro'
+import { em } from '../i18n/index.mjs'
+
+interface Props {
+  t: Record<string, any>
+}
+
+const { t } = Astro.props
+const { about } = t
+---
+
+<section id={about.id} class="section about">
+  <div class="container">
+    <Folio index="04" name={about.eyebrow} />
+    <div class="about__grid">
+      <div class="about__visual reveal">
+        <div class="about__plate">
+          <img
+            src="/assets/img/main_picture_alexander_michels.webp"
+            alt={about.portraitAlt}
+            width="530"
+            height="608"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+        <p class="about__sign mono" aria-hidden="true">Alexander Michels — Fluttera</p>
+      </div>
+
+      <div class="about__content">
+        <h2 class="about__heading reveal" set:html={em(about.heading)} />
+        {about.paragraphs.map((p: string, i: number) => <p class="about__p reveal" style={`--d:${60 + i * 60}ms`}>{p}</p>)}
+        <ul class="about__bullets reveal" style="--d:200ms">
+          {
+            about.bullets.map((b: string) => (
+              <li>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M2.5 8.5 6 12l7.5-8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+                {b}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about__grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+
+  .about__visual {
+    grid-column: 1 / 6;
+    position: sticky;
+    top: 6rem;
+  }
+
+  .about__plate {
+    background: var(--blue-wash);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-s);
+    box-shadow: var(--shadow-offset);
+    padding: clamp(1rem, 2.5vw, 2rem) clamp(1rem, 2.5vw, 2rem) 0;
+    overflow: hidden;
+  }
+
+  .about__plate img {
+    width: 100%;
+    display: block;
+  }
+
+  .about__sign {
+    margin-top: 1rem;
+    color: var(--ink-soft);
+  }
+
+  .about__content {
+    grid-column: 6 / 13;
+    max-width: 38rem;
+  }
+
+  .about__heading {
+    font-size: var(--text-h2);
+    margin-bottom: 1.6rem;
+  }
+
+  .about__p {
+    color: var(--ink-soft);
+    font-size: var(--text-lead);
+    margin-bottom: 1.2rem;
+    max-width: 34em;
+    hyphens: manual;
+  }
+
+  .about__bullets {
+    list-style: none;
+    padding: 0;
+    margin-top: 2rem;
+  }
+
+  .about__bullets li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.8rem;
+    padding-block: 0.85rem;
+    border-top: 1px solid var(--hairline);
+    font-weight: 500;
+  }
+
+  .about__bullets li:last-child {
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .about__bullets svg {
+    color: var(--blue);
+    flex: none;
+    transform: translateY(2px);
+  }
+
+  @media (max-width: 63.99rem) {
+    .about__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .about__visual {
+      grid-column: 1;
+      position: static;
+      max-width: 24rem;
+    }
+
+    .about__content {
+      grid-column: 1;
+    }
+  }
+</style>

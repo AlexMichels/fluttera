@@ -3,6 +3,8 @@ Rebuild fluttera.de — the one-page marketing site of a solo Flutter freelance 
 
 Who benefits: Alexander Michels (owner, alex@fluttera.de) gets a site that signals the same care and craft he applies to client apps ("the website is the portfolio piece"). Prospective clients get a clear, credible picture of what he builds, proof of shipped work, and a low-friction path to book a call.
 
+The rebuild also absorbs the owner's existing hand-built blog (live at fluttera.de/learn/) as a first-class, professionally designed blog section: same design system, same quality bar. One site — marketing page and blog together. The blog content (text, images, embedded YouTube videos) already exists and is migrated, not rewritten.
+
 The current site is a generic German Start-Bootstrap template. The target is the design direction shown in the eight Figma ideation screenshots in the repo root (`Screenshot 2026-07-11 at 18.*.png`): bold editorial typography, monospace eyebrow labels, a light hero with a giant "Fluttera" wordmark, a blue stats band, a dark "What I build" section, selected-work cards, a 4-step process, an about section, an FAQ grid, and a contact/CTA section. It must NOT look AI-generated or template-based — it should read like a 100.000 € agency site.
 </goal>
 
@@ -10,7 +12,7 @@ The current site is a generic German Start-Bootstrap template. The target is the
 Tech stack decisions (already made with the owner):
 - **Astro** static build (owner's choice), deployed to **GitHub Pages** via GitHub Actions. Hosting must remain free; output is fully static.
 - **Bilingual DE/EN** with a language toggle in the nav. German is the default locale at `/`; English lives at `/en/`. The Figma mockups show the English copy; German copy must be written to match (marketing-grade German, not literal translation).
-- **Strict one-pager**: anchor navigation to sections, plus the two existing legal pages (Impressum, Datenschutz). No blog, no separate subpages. The "Blog" and "Flutter-Entwickler" items visible in the mockup nav are dropped; nav links become section anchors.
+- **One-pager + integrated blog**: the home page is a strict one-pager with anchor navigation, plus the two legal pages (Impressum, Datenschutz) and a blog (index page + article pages) migrated from the owner's existing hand-built blog. The "Blog" nav item from the mockup stays (links to the blog index); "Flutter-Entwickler" is dropped.
 - **Conversion path: Calendly + email/phone links.** Primary CTA opens the Calendly popup (`https://calendly.com/fluttera/30min`). Secondary: `mailto:alex@fluttera.de` and `tel:+4952424129026`. There is NO contact form (no form backend needed). The contact section from the mockup is adapted: booking CTA card replaces the form.
 - **SEO + AI-search (AEO) optimization is a first-class requirement.** Prospective clients may ask Google OR an AI assistant for Flutter freelancer recommendations in Germany; the site must be maximally legible to both.
 - Location signalling: visible copy says **"Germany"** (as in the mockup eyebrow "Senior Freelance Flutter Developer · Germany"). Structured data may additionally list Berlin as a service location / area served. Do NOT put a specific small-town address prominently in the page copy (the Impressum legally carries the full address already).
@@ -23,7 +25,11 @@ Existing repo state (branch `development`, which is also the PR target):
 - Root screenshots `Screenshot 2026-07-11 at 18.*.png` — design reference only; move them to `ai_docs/design-reference/` and exclude from the built site.
 - Git history shows a "Delete CNAME" commit — verify custom-domain configuration and re-establish `public/CNAME` containing `fluttera.de` so deploys don't drop the domain.
 
-Files to examine during implementation: @index.html (content to port), @impressum.html, @datenschutz.html (migrate verbatim), the eight root screenshots (design source of truth).
+Live-site discovery (verified 2026-07-11):
+- **The live fluttera.de is currently deployed from a DIFFERENT repository.** No branch of this repo contains the live site's `learn/` blog or its EN legal variants (`imprint.html`, `privacy.html`), and this repo's CNAME was deleted. Launch therefore includes a deployment consolidation: this repo's new Astro site becomes the single deployment and the fluttera.de custom domain moves to it (manual GitHub settings step — coordinate the cutover, and retire the old deployment so stale content stops being served).
+- **Existing blog**: hand-built page(s) under `https://fluttera.de/learn/`. Known article: "Scalable Flutter Development – Best Practices for Project Structure" (English, by Alexander Michels; images under `learn/images/`; two embedded YouTube videos: `-IqHOFh7yrk`, `HQoJH3s9hDs`). The live sitemap does not list it. The owner may have more articles and holds the blog's source repo — obtain the source repo or a complete article list from the owner before migration; fallback: scrape the live pages.
+
+Files to examine during implementation: @index.html (content to port), @impressum.html, @datenschutz.html (migrate verbatim), the eight root screenshots (design source of truth), and the blog source (owner-provided repo or live `learn/` pages).
 </background>
 
 <user_flows>
@@ -38,7 +44,8 @@ Alternative flows:
 - **English-speaking visitor**: clicks the language toggle in the nav → lands on the equivalent `/en/` page at the top; all content, meta tags, and structured data are English. Toggle on `/en/` returns to `/`.
 - **Mobile visitor (≤ 768px)**: hamburger menu opens an overlay/drawer with the same anchors + language toggle + CTA; menu closes on anchor click and scrolls smoothly to the section.
 - **Direct-contact visitor**: skips Calendly, uses the email or phone link in the contact section or footer. `mailto:` and `tel:` links must be real anchors, not JS handlers.
-- **AI assistant / crawler**: fetches fully rendered static HTML (no client-side content rendering), `llms.txt`, sitemap, and JSON-LD; can answer "who is a good Flutter freelancer in Germany?" with name, services, experience, and URL.
+- **AI assistant / crawler**: fetches fully rendered static HTML (no client-side content rendering), `llms.txt`, sitemap, and JSON-LD; can answer "who is a good Flutter freelancer in Germany?" with name, services, experience, and URL — and can cite blog articles as evidence of expertise.
+- **Blog reader (developer / technical evaluator)**: clicks "Blog" in the nav → blog index → opens an article → reads a beautifully typeset article (prose styles, syntax-highlighted code, images); embedded videos load on click; author block and a closing CTA lead back to booking a call.
 - **Legal-page visitor**: clicks Impressum / Datenschutz in the footer → dedicated pages render with the existing legal content and a link back to the home page.
 
 Error flows:

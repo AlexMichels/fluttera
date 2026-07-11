@@ -1,0 +1,172 @@
+---
+import Folio from './Folio.astro'
+import { em } from '../i18n/index.mjs'
+
+interface Props {
+  t: Record<string, any>
+}
+
+const { t } = Astro.props
+const { services } = t
+const large = services.cards.filter((c: any) => c.size === 'large')
+const small = services.cards.filter((c: any) => c.size === 'small')
+---
+
+<section id={services.id} class="section services">
+  <div class="container">
+    <Folio index="01" name={services.eyebrow} />
+    <div class="section-head">
+      <h2 set:html={em(services.heading)} />
+      <p class="intro">{services.intro}</p>
+    </div>
+
+    <div class="services__grid">
+      {
+        large.map((card: any, i: number) => (
+          <article class="svc svc--lg reveal" style={`--d:${i * 60}ms`}>
+            <span class="svc__index mono" aria-hidden="true">S.{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="svc__title">{card.title}</h3>
+            <p class="svc__body">{card.body}</p>
+            <p class="svc__tags mono">{card.tags.join(' · ')}</p>
+          </article>
+        ))
+      }
+      {
+        small.map((card: any, i: number) => (
+          <article class="svc svc--sm reveal" style={`--d:${i * 60}ms`}>
+            <span class="svc__index mono" aria-hidden="true">S.{String(i + 3).padStart(2, '0')}</span>
+            <h3 class="svc__title svc__title--sm">{card.title}</h3>
+            <p class="svc__body svc__body--sm">{card.body}</p>
+          </article>
+        ))
+      }
+      <aside class="svc-banner reveal">
+        <span class="svc-banner__eyebrow mono">{services.banner.eyebrow}</span>
+        <h3 class="svc-banner__title">{services.banner.title}</h3>
+        <p class="svc-banner__body">{services.banner.body}</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<style>
+  .services__grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .svc {
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-s);
+    padding: clamp(1.4rem, 3vw, 2.2rem);
+    display: flex;
+    flex-direction: column;
+    transition:
+      background-color var(--dur-fast) var(--ease),
+      border-color var(--dur-fast) var(--ease);
+  }
+
+  .svc:hover {
+    background: var(--blue-wash);
+    border-color: rgba(39, 67, 205, 0.35);
+  }
+
+  .svc--lg {
+    grid-column: span 3;
+    min-height: 17rem;
+  }
+
+  .svc--sm {
+    grid-column: span 2;
+  }
+
+  .svc__index {
+    color: var(--ink-soft);
+    margin-bottom: 2.4rem;
+    transition: color var(--dur-fast) var(--ease);
+  }
+
+  .svc:hover .svc__index {
+    color: var(--blue);
+  }
+
+  .svc__title {
+    font-size: var(--text-h3);
+    margin-bottom: 0.8rem;
+    max-width: 16em;
+  }
+
+  .svc__title--sm {
+    font-size: 1.2rem;
+  }
+
+  .svc__body {
+    color: var(--ink-soft);
+    max-width: 34em;
+  }
+
+  .svc__body--sm {
+    font-size: var(--text-small);
+  }
+
+  .svc__tags {
+    margin-top: auto;
+    padding-top: 1.6rem;
+    color: var(--blue);
+    font-size: 0.6875rem;
+  }
+
+  .svc-banner {
+    grid-column: 1 / -1;
+    background: var(--blue);
+    color: #fff;
+    border-radius: var(--radius-s);
+    padding: clamp(1.6rem, 4vw, 2.6rem);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    gap: 0.6rem 3rem;
+    align-items: start;
+    margin-top: 1.5rem;
+  }
+
+  .svc-banner__eyebrow {
+    grid-column: 1 / -1;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .svc-banner__title {
+    font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+    max-width: 14em;
+  }
+
+  .svc-banner__body {
+    color: rgba(255, 255, 255, 0.88);
+    max-width: 44em;
+  }
+
+  @media (max-width: 63.99rem) {
+    .svc--lg {
+      grid-column: 1 / -1;
+      min-height: 0;
+    }
+
+    .svc--sm {
+      grid-column: span 2;
+    }
+
+    .svc-banner {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .svc--sm {
+      grid-column: 1 / -1;
+    }
+
+    .svc__index {
+      margin-bottom: 1.4rem;
+    }
+  }
+</style>

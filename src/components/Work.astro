@@ -1,0 +1,187 @@
+---
+import Folio from './Folio.astro'
+
+interface Props {
+  t: Record<string, any>
+}
+
+const { t } = Astro.props
+const { work } = t
+
+// Single-colour line plates — one per case, drawn like spot illustrations.
+const plates = [
+  // Smart home: house with connected device nodes
+  `<path d="M52 40 82 18l30 22v22H52V40Z"/>
+   <circle cx="68" cy="50" r="3" fill="currentColor" stroke="none"/>
+   <circle cx="96" cy="50" r="3" fill="currentColor" stroke="none"/>
+   <circle cx="82" cy="36" r="3" fill="currentColor" stroke="none"/>
+   <path d="M70.5 47.5 79.5 38.5M84.5 38.5l9 9M71 50h22" stroke-dasharray="2 3"/>`,
+  // MedTech: cross + pulse line
+  `<path d="M30 39h26l5-10 6 20 5-10h62" />
+   <path d="M76 23h12v8h8v12h-8v8H76v-8h-8V31h8v-8Z" fill="var(--blue-wash)"/>`,
+  // Time & attendance: clock with ticks
+  `<circle cx="82" cy="39" r="17"/>
+   <path d="M82 28v11h9"/>
+   <path d="M82 15v4M82 59v4M58 39h4M102 39h4"/>
+   <path d="M116 30l4 4 7-7"/>`,
+  // MVP: ascending blocks + trend arrow
+  `<rect x="52" y="44" width="16" height="14"/>
+   <rect x="74" y="36" width="16" height="22"/>
+   <rect x="96" y="26" width="16" height="32"/>
+   <path d="M52 32 104 12M104 12h-8M104 12v8"/>`,
+]
+---
+
+<section id={work.id} class="section work">
+  <div class="container">
+    <Folio index="02" name={work.eyebrow} />
+    <div class="section-head">
+      <h2>{work.heading}</h2>
+      <p class="intro">{work.intro}</p>
+    </div>
+
+    <div class="work__grid">
+      {
+        work.cards.map((card: any, i: number) => (
+          <article class="case reveal" style={`--d:${(i % 2) * 80}ms`}>
+            <div class="case__plate" aria-hidden="true">
+              <svg viewBox="0 0 164 76" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" set:html={plates[i]} />
+            </div>
+            <div class="case__body">
+              <span class="case__category mono">{card.category}</span>
+              <h3 class="case__title">{card.title}</h3>
+              <p class="case__text">{card.body}</p>
+              <dl class="case__facts">
+                {card.facts.map((f: { k: string; v: string }) => (
+                  <div class="case__fact">
+                    <dt class="mono">{f.k}</dt>
+                    <dd>{f.v}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .work {
+    background: var(--paper-warm);
+  }
+
+  .work__grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .case {
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-s);
+    background: var(--paper);
+    display: flex;
+    flex-direction: column;
+    transition: border-color var(--dur-fast) var(--ease);
+  }
+
+  /* Asymmetric 7/5 — 5/7 rhythm */
+  .case:nth-child(4n + 1) {
+    grid-column: span 7;
+  }
+
+  .case:nth-child(4n + 2) {
+    grid-column: span 5;
+  }
+
+  .case:nth-child(4n + 3) {
+    grid-column: span 5;
+  }
+
+  .case:nth-child(4n + 4) {
+    grid-column: span 7;
+  }
+
+  .case:hover {
+    border-color: rgba(39, 67, 205, 0.4);
+  }
+
+  .case__plate {
+    background: var(--blue-wash);
+    color: var(--blue);
+    border-bottom: 1px solid var(--hairline);
+    border-radius: var(--radius-s) var(--radius-s) 0 0;
+    display: grid;
+    place-items: center;
+    padding: clamp(1.2rem, 2.5vw, 2rem);
+  }
+
+  .case__plate svg {
+    width: min(11rem, 60%);
+    transition: transform var(--dur-med) var(--ease);
+  }
+
+  .case:hover .case__plate svg {
+    transform: translateY(-3px);
+  }
+
+  .case__body {
+    padding: clamp(1.3rem, 2.6vw, 2rem);
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .case__category {
+    color: var(--blue);
+    margin-bottom: 0.9rem;
+  }
+
+  .case__title {
+    font-size: var(--text-h3);
+    margin-bottom: 0.7rem;
+    max-width: 18em;
+  }
+
+  .case__text {
+    color: var(--ink-soft);
+    font-size: var(--text-small);
+    max-width: 40em;
+    margin-bottom: 1.4rem;
+  }
+
+  .case__facts {
+    margin-top: auto;
+  }
+
+  .case__fact {
+    display: grid;
+    grid-template-columns: 7.5rem 1fr;
+    gap: 1rem;
+    padding-block: 0.55rem;
+    border-top: 1px solid var(--hairline);
+    font-size: var(--text-small);
+  }
+
+  .case__fact dt {
+    color: var(--ink-soft);
+    font-size: 0.6875rem;
+    padding-top: 0.2rem;
+  }
+
+  .case__fact dd {
+    font-weight: 500;
+  }
+
+  @media (max-width: 63.99rem) {
+    .work__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .case:nth-child(n) {
+      grid-column: 1;
+    }
+  }
+</style>

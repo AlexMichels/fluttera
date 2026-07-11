@@ -1,0 +1,93 @@
+---
+interface Props {
+  t: Record<string, any>
+}
+
+const { t } = Astro.props
+const { stats } = t
+---
+
+<section class="stats" data-theme="dark" aria-label={stats.ariaLabel}>
+  <div class="container">
+    <div class="stats__grid">
+      {
+        stats.items.map((item: any, i: number) => (
+          <div class="stats__item reveal" style={`--d:${i * 90}ms`}>
+            <span class="stats__value">{/^\d+$/.test(item.value) ? <span data-count={item.value}>{item.value}</span> : item.value}{item.suffix ? <span class="stats__suffix">{item.suffix}</span> : ''}</span>
+            <span class="stats__label mono">{item.label}</span>
+            <p class="stats__detail">{item.detail}</p>
+          </div>
+        ))
+      }
+    </div>
+    <p class="stats__nda mono reveal" style="--d:300ms">{stats.ndaNote}</p>
+  </div>
+</section>
+
+<style>
+  .stats {
+    padding-block: clamp(3.5rem, 8vw, 6rem);
+  }
+
+  .stats__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1.5rem, 4vw, 3rem);
+  }
+
+  .stats__item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .stats__item + .stats__item {
+    border-left: 1px solid var(--hairline-on-dark);
+    padding-left: clamp(1.5rem, 4vw, 3rem);
+  }
+
+  .stats__value {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-variation-settings: 'SOFT' 0, 'WONK' 0;
+    font-weight: 540;
+    font-variant-numeric: lining-nums tabular-nums;
+    font-size: clamp(3rem, 6.5vw, 5.5rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .stats__suffix {
+    color: var(--blue-on-dark);
+  }
+
+  .stats__label {
+    color: var(--blue-on-dark);
+  }
+
+  .stats__detail {
+    color: var(--soft-on-dark);
+    font-size: var(--text-small);
+    max-width: 24em;
+  }
+
+  .stats__nda {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--hairline-on-dark);
+    color: var(--soft-on-dark);
+  }
+
+  @media (max-width: 47.99rem) {
+    .stats__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .stats__item + .stats__item {
+      border-left: 0;
+      padding-left: 0;
+      border-top: 1px solid var(--hairline-on-dark);
+      padding-top: 1.5rem;
+    }
+  }
+</style>

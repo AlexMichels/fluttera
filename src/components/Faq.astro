@@ -1,0 +1,188 @@
+---
+import Folio from './Folio.astro'
+import { EMAIL } from '../lib/site.mjs'
+
+interface Props {
+  t: Record<string, any>
+}
+
+const { t } = Astro.props
+const { faq } = t
+---
+
+<section id={faq.id} class="section faq">
+  <div class="container">
+    <Folio index="05" name={faq.eyebrow} />
+    <div class="faq__grid">
+      <div class="faq__aside">
+        <h2 class="faq__heading reveal">{faq.heading}</h2>
+        <div class="faq__escape reveal" style="--d:80ms">
+          <p class="faq__escape-title">{faq.escape.title}</p>
+          <p class="faq__escape-body">{faq.escape.body}</p>
+          <a class="link-bleed mono faq__escape-cta" href={`mailto:${EMAIL}`}>{faq.escape.cta}</a>
+        </div>
+      </div>
+
+      <div class="faq__list">
+        {
+          faq.items.map((item: { q: string; a: string }, i: number) => (
+            <details class="faq-item reveal" style={`--d:${i * 40}ms`}>
+              <summary class="faq-item__q">
+                <span class="faq-item__index mono" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                <span class="faq-item__text">{item.q}</span>
+                <svg class="faq-item__icon" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+                  <path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                </svg>
+              </summary>
+              <p class="faq-item__a">{item.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq {
+    background: var(--paper-warm);
+  }
+
+  .faq__grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+
+  .faq__aside {
+    grid-column: 1 / 5;
+    position: sticky;
+    top: 6rem;
+  }
+
+  .faq__heading {
+    font-size: var(--text-h2);
+    margin-bottom: 2rem;
+  }
+
+  .faq__escape {
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-s);
+    background: var(--paper);
+    padding: 1.5rem;
+  }
+
+  .faq__escape-title {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .faq__escape-body {
+    color: var(--ink-soft);
+    font-size: var(--text-small);
+    margin-bottom: 1.2rem;
+  }
+
+  .faq__escape-cta {
+    color: var(--blue);
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  .faq__list {
+    grid-column: 5 / 13;
+  }
+
+  .faq-item {
+    border-top: 1px solid var(--hairline);
+  }
+
+  .faq-item:last-child {
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .faq-item__q {
+    display: flex;
+    align-items: baseline;
+    gap: 1.1rem;
+    padding-block: 1.15rem;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 1.0625rem;
+    list-style: none;
+    transition: color var(--dur-fast) var(--ease);
+  }
+
+  .faq-item__q::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-item__q:hover {
+    color: var(--blue);
+  }
+
+  .faq-item__index {
+    color: var(--blue);
+    flex: none;
+  }
+
+  .faq-item__text {
+    flex: 1;
+  }
+
+  .faq-item__icon {
+    flex: none;
+    align-self: center;
+    color: var(--ink-soft);
+    transition: transform var(--dur-fast) var(--ease);
+  }
+
+  .faq-item[open] .faq-item__icon {
+    transform: rotate(45deg);
+    color: var(--blue);
+  }
+
+  .faq-item__a {
+    color: var(--ink-soft);
+    padding: 0 2.5rem 1.4rem 2.35rem;
+    max-width: 44em;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .faq-item[open] .faq-item__a {
+      animation: faq-open var(--dur-med) var(--ease);
+    }
+  }
+
+  @keyframes faq-open {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media (max-width: 63.99rem) {
+    .faq__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .faq__aside {
+      grid-column: 1;
+      position: static;
+    }
+
+    .faq__list {
+      grid-column: 1;
+    }
+
+    .faq-item__a {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+</style>

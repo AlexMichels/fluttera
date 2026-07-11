@@ -1,0 +1,202 @@
+---
+import Folio from './Folio.astro'
+import { em } from '../i18n/index.mjs'
+import { CALENDLY_URL, EMAIL, PHONE, PHONE_DISPLAY } from '../lib/site.mjs'
+
+interface Props {
+  t: Record<string, any>
+}
+
+const { t } = Astro.props
+const { contact } = t
+---
+
+<section id={contact.id} class="section contact" data-theme="dark">
+  <div class="container">
+    <Folio index="06" name={contact.eyebrow} />
+    <div class="section-head contact__head">
+      <h2 set:html={em(contact.heading)} />
+      <p class="intro">{contact.sub}</p>
+    </div>
+
+    <div class="contact__grid">
+      <div class="contact__booking reveal">
+        <p class="contact__booking-title">{contact.booking.title}</p>
+        <p class="contact__booking-body">{contact.booking.body}</p>
+        <a class="btn btn--primary contact__cta" href={CALENDLY_URL} target="_blank" rel="noopener" data-calendly>
+          {contact.booking.cta}
+        </a>
+        <p class="contact__micro mono">{contact.microRow}</p>
+        <p class="contact__note mono">{contact.booking.note}</p>
+      </div>
+
+      <div class="contact__direct reveal" style="--d:100ms">
+        <div class="contact__person">
+          <img
+            class="contact__portrait"
+            src="/assets/img/main_picture_alexander_michels.webp"
+            alt=""
+            width="64"
+            height="64"
+            loading="lazy"
+            decoding="async"
+          />
+          <p class="contact__personal">{contact.personal}</p>
+        </div>
+        <p class="contact__direct-title mono">{contact.direct.title}</p>
+        <dl class="contact__rows">
+          <div class="contact__row">
+            <dt class="mono">{contact.direct.emailLabel}</dt>
+            <dd><a class="link-bleed" href={`mailto:${EMAIL}`}>{EMAIL}</a></dd>
+          </div>
+          <div class="contact__row">
+            <dt class="mono">{contact.direct.phoneLabel}</dt>
+            <dd><a class="link-bleed" href={`tel:${PHONE}`}>{PHONE_DISPLAY}</a></dd>
+          </div>
+        </dl>
+        <p class="contact__response mono">{contact.direct.responseNote}</p>
+        <span class="avail mono contact__avail">
+          <span class="avail__dot" aria-hidden="true"></span>
+          {t.hero.availability}
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact__head {
+    margin-bottom: clamp(2.5rem, 6vw, 4rem);
+  }
+
+  .contact__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 1.5rem;
+    align-items: stretch;
+  }
+
+  /* The booking card is a "tipped-in" printed card: paper on midnight */
+  .contact__booking {
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: var(--radius-s);
+    box-shadow: 6px 6px 0 rgba(39, 67, 205, 0.55);
+    padding: clamp(1.8rem, 4vw, 3rem);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .contact__booking-title {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-variation-settings: 'SOFT' 0, 'WONK' 0;
+    font-weight: 580;
+    font-size: clamp(1.5rem, 2.6vw, 2rem);
+    letter-spacing: -0.01em;
+    margin-bottom: 0.8rem;
+  }
+
+  .contact__booking-body {
+    color: var(--ink-soft);
+    max-width: 32em;
+    margin-bottom: 2rem;
+  }
+
+  .contact__cta {
+    font-size: 1.0625rem;
+    padding: 1.15rem 1.9rem;
+  }
+
+  .contact__micro {
+    margin-top: 1.4rem;
+    color: var(--ink-soft);
+  }
+
+  .contact__note {
+    margin-top: 0.4rem;
+    color: var(--blue);
+  }
+
+  .contact__direct {
+    border: 1px solid var(--hairline-on-dark);
+    border-radius: var(--radius-s);
+    padding: clamp(1.8rem, 4vw, 2.6rem);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .contact__person {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .contact__portrait {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: top center;
+    background: var(--blue-wash);
+    border: 1px solid var(--hairline-on-dark);
+    flex: none;
+  }
+
+  .contact__personal {
+    font-weight: 500;
+    font-size: 1.0625rem;
+    max-width: 18em;
+    hyphens: manual;
+  }
+
+  .contact__direct-title {
+    color: var(--soft-on-dark);
+    margin-bottom: 0.4rem;
+  }
+
+  .contact__rows {
+    margin: 0;
+  }
+
+  .contact__row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding-block: 0.9rem;
+    border-top: 1px solid var(--hairline-on-dark);
+  }
+
+  .contact__row:last-child {
+    border-bottom: 1px solid var(--hairline-on-dark);
+  }
+
+  .contact__row dt {
+    color: var(--soft-on-dark);
+    font-size: 0.6875rem;
+  }
+
+  .contact__row dd {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 500;
+  }
+
+  .contact__response {
+    margin-top: 1.4rem;
+    color: var(--soft-on-dark);
+  }
+
+  .contact__avail {
+    margin-top: auto;
+    padding-top: 1.4rem;
+  }
+
+  @media (max-width: 63.99rem) {
+    .contact__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
