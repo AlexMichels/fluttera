@@ -10,8 +10,8 @@ One-page marketing website for Fluttera (fluttera.de) — the Flutter freelance 
 
 # Design system ("printed matter")
 - Tokens in `src/styles/tokens.css`: warm paper #F5F3EC, ink #191A1E, ONE spot colour Reflex blue #2743CD, midnight #101430 dark sections, hairline rules, print-sharp 3px radii, flat offset shadows (no blur), one easing family.
-- Type: Fraunces (display serif, SOFT/WONK locked to 0), Switzer (body), IBM Plex Mono (marginalia/eyebrows). Self-hosted in `public/fonts` — no font CDNs.
-- Signature motifs: folio hairline headers with mono section indices (01–06 matching nav numbering), bleeding underlines, mono datasheet rows on case cards. No gradients, no glassmorphism, no emoji icons, no stock photos.
+- Type: Anton (display — condensed uppercase, the free stand-in for ploy.ai's commercial FK Screamer; single weight 400, never synthesize bold), Geist (body, variable), IBM Plex Mono (marginalia/eyebrows). Self-hosted in `public/fonts` — no font CDNs.
+- Signature motifs (ploy.ai-inspired): nav is quiet ink-on-paper at the top and condenses into a floating frosted glass pill on scroll; hero media sits in an inset rounded frame on paper; mono datasheet rows on case cards. No gradients, no emoji icons.
 - Motion: IntersectionObserver reveals + count-ups in `src/scripts/main.js` (vanilla, small). Full prefers-reduced-motion support; content must stay visible without JS.
 
 # Conversion path

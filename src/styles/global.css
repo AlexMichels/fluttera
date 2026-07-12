@@ -61,13 +61,24 @@ p {
   text-wrap: pretty;
 }
 
+/* Display headlines: Anton is a single-weight (400) condensed face designed
+   for tight uppercase settings — never synthesize bolder weights. */
 h1,
-h2,
-h3 {
+h2 {
   font-family: var(--font-display);
+  font-weight: 400;
+  /* Anton's umlauts sit above cap height — keep air between lines */
+  line-height: 1.04;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+h3 {
+  font-family: var(--font-body);
   font-weight: 600;
-  line-height: 1.05;
-  letter-spacing: -0.045em;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
   text-wrap: balance;
 }
 
@@ -354,6 +365,12 @@ html.js .reveal.revealed {
     opacity var(--dur-med) var(--ease),
     transform var(--dur-med) var(--ease);
   transition-delay: var(--d, 0ms);
+}
+
+/* Scroll-linked word fill: spans are created by JS only; opacity is driven
+   per word from main.js as the heading scrolls up */
+html.js [data-scroll-fill] .fill-word {
+  opacity: 0.16;
 }
 
 /* Rule-draw: hairline that draws itself left-to-right (hero, stats, contact only) */

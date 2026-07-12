@@ -50,25 +50,17 @@ const ok = (name, cond, extra = '') => results.push(`${cond ? 'PASS' : 'FAIL'} $
   ok('English locale renders', enLocale.lang === 'en' && enLocale.heading?.includes('Flutter apps for complex products.'))
   await page.goto(`${base}/`, { waitUntil: 'networkidle0' })
 
-  // Nav dark inversion over the services section (scroll past the anchor offset so the
-  // dark section actually sits underneath the nav bar)
+  // Nav: constant solid white pill — identical at the top and after scrolling
+  const pillAtTop = await page.$eval('.nav__pill', (p) => getComputedStyle(p).backgroundColor)
   await page.evaluate(() => {
     const top = document.querySelector('#services').getBoundingClientRect().top + window.scrollY
     window.scrollTo({ top: top + 200, behavior: 'instant' })
   })
   await new Promise((r) => setTimeout(r, 700))
-  const navDark = await page.$eval('[data-nav]', (n) => n.classList.contains('nav--dark'))
-  ok('nav dark inversion', navDark)
-  await page.screenshot({ path: `${outDir}/it-nav-dark.png` })
-
-  // Nav back to light over process
-  await page.evaluate(() => {
-    const top = document.querySelector('#process').getBoundingClientRect().top + window.scrollY
-    window.scrollTo({ top: top + 100, behavior: 'instant' })
-  })
-  await new Promise((r) => setTimeout(r, 700))
-  const navLight = await page.$eval('[data-nav]', (n) => !n.classList.contains('nav--dark') && n.classList.contains('nav--scrolled'))
-  ok('nav light + scrolled', navLight)
+  const pillScrolled = await page.$eval('.nav__pill', (p) => getComputedStyle(p).backgroundColor)
+  // Pill is --paper (#f4f7fb) so it blends seamlessly at the top of the page
+  ok('nav pill constant on scroll', pillAtTop === 'rgb(244, 247, 251)' && pillScrolled === pillAtTop, `${pillAtTop} → ${pillScrolled}`)
+  await page.screenshot({ path: `${outDir}/it-nav-pill.png` })
 
   // FAQ answers stay visible as a static card grid.
   await page.evaluate(() => document.querySelector('#faq').scrollIntoView())

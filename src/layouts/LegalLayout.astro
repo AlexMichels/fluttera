@@ -46,7 +46,14 @@ const t = getDict('de')
     margin: 2.5rem 0 2rem;
   }
 
+  /* Running heads in long legal copy stay in the body face — Anton at these
+     sizes reads like poster type. */
   .legal h2 {
+    font-family: var(--font-body);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    text-transform: none;
     font-size: 1.6rem;
     margin: 2.8rem 0 1rem;
   }

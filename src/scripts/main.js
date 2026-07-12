@@ -24,24 +24,46 @@ function setupReveals() {
   targets.forEach((el) => io.observe(el))
 }
 
-/* ————— Nav: scrolled state, dark-section inversion, mobile menu ————— */
+/* ————— Scroll-linked text fill (ploy-style): big statement headings fill
+   word by word as they move up the viewport. Progressive enhancement — the
+   heading is fully visible without JS or with reduced motion. ————— */
+function setupScrollFill() {
+  const els = document.querySelectorAll('[data-scroll-fill]')
+  if (els.length === 0 || reducedMotion.matches) return
+
+  els.forEach((el) => {
+    const words = el.textContent.trim().split(/\s+/)
+    el.textContent = ''
+    words.forEach((word, i) => {
+      const span = document.createElement('span')
+      span.className = 'fill-word'
+      span.textContent = word
+      el.appendChild(span)
+      if (i < words.length - 1) el.appendChild(document.createTextNode(' '))
+    })
+  })
+
+  const update = () => {
+    els.forEach((el) => {
+      const rect = el.getBoundingClientRect()
+      const vh = window.innerHeight
+      // 0 when the heading enters at 88% of the viewport, 1 once it reaches 40%
+      const progress = Math.min(1, Math.max(0, (vh * 0.88 - rect.top) / (vh * 0.48)))
+      const spans = el.querySelectorAll('.fill-word')
+      spans.forEach((span, i) => {
+        const t = Math.min(1, Math.max(0, progress * spans.length - i))
+        span.style.opacity = (0.16 + 0.84 * t).toFixed(3)
+      })
+    })
+  }
+  update()
+  window.addEventListener('scroll', update, { passive: true })
+}
+
+/* ————— Nav: mobile menu ————— */
 function setupNav() {
   const nav = document.querySelector('[data-nav]')
   if (!nav) return
-
-  // Scrolled state + dark inversion while a midnight section passes under the bar.
-  const darkSections = [...document.querySelectorAll('[data-theme="dark"]')]
-  const navH = nav.offsetHeight
-  const onScroll = () => {
-    nav.classList.toggle('nav--scrolled', window.scrollY > 8)
-    const overDark = darkSections.some((s) => {
-      const r = s.getBoundingClientRect()
-      return r.top < navH && r.bottom > 0
-    })
-    nav.classList.toggle('nav--dark', overDark)
-  }
-  onScroll()
-  window.addEventListener('scroll', onScroll, { passive: true })
 
   const toggle = nav.querySelector('[data-menu-toggle]')
   const menu = nav.querySelector('[data-menu]')
@@ -116,6 +138,7 @@ init()
 
 function init() {
   setupReveals()
+  setupScrollFill()
   setupNav()
   setupCalendly()
   setupLangToggle()

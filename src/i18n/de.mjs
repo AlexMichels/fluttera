@@ -28,17 +28,13 @@ export default {
     langSwitch: { label: 'English', short: 'EN', href: '/en/', ariaLabel: 'Switch to the English version' },
   },
   hero: {
-    eyebrow: 'Senior Flutter-Entwicklung',
     headline: 'Flutter-Apps für komplexe Produkte. Gebaut für Millionen Nutzer.',
     sub: 'Ich entwickle belastbare Flutter-Apps für Mittelstand und Start-ups. Skalierbar, wartbar und so dokumentiert, dass Ihr Team sie sicher weiterentwickeln kann.',
     ctaPrimary: 'Projekt besprechen',
-    ctaSecondary: 'Referenzen ansehen',
-    proof: 'Millionen Installationen · iOS · Android · Web · Desktop',
     availability: 'Verfügbar für neue Projekte',
     badge: 'Eine Codebasis für jeden Bildschirm',
     badgePlatforms: 'iOS · Android · Web · Desktop',
     phoneCaption: 'Smart Home mit mehr als 100 Gerätetypen',
-    scrollHint: 'Scrollen',
     phoneUi: {
       header: 'Zuhause',
       scenes: ['Morgen', 'Abend', 'Film'],
@@ -55,11 +51,9 @@ export default {
     },
   },
   stats: {
-    ariaLabel: 'Professionelle Produktentwicklung mit AI',
-    eyebrow: 'AI für Flutter-Teams',
-    heading: 'AI verändert Softwareentwicklung. Aber wo fängt Ihr Team an?',
-    intro: 'Ich bringe einen production-ready AI-Workflow in Ihr Flutter-Team, den Ihre Entwickler im Alltag selbst nutzen können.',
-    tools: 'Claude Code · Codex · ACT · CI/CD',
+    ariaLabel: 'Professionelle Produktentwicklung mit KI',
+    heading: 'Mit KI Spec-Driven im Team arbeiten.',
+    intro: 'Ich bringe einen production-ready KI-Workflow in Ihr Flutter-Team, den Ihre Entwickler im Alltag selbst nutzen können.',
     steps: [
       {
         title: 'Spec-driven entwickeln',
@@ -278,7 +272,7 @@ export default {
       { href: '/datenschutz.html', label: 'Datenschutz' },
     ],
     copyright: '© 2026 Fluttera · Alexander Michels',
-    colophon: 'Statisch gebaut, von Hand gesetzt in Fraunces, Switzer & IBM Plex Mono.',
+    colophon: 'Statisch gebaut, von Hand gesetzt in Anton, Geist & IBM Plex Mono.',
     backToTop: 'Nach oben',
   },
   legalPage: {

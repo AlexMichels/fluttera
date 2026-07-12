@@ -28,17 +28,13 @@ export default {
     langSwitch: { label: 'Deutsch', short: 'DE', href: '/', ariaLabel: 'Zur deutschen Version wechseln' },
   },
   hero: {
-    eyebrow: 'Senior Flutter Development',
     headline: 'Flutter apps for complex products. Built for millions of users.',
     sub: 'I build robust Flutter apps for established companies and startups. Scalable, maintainable and documented so your team can develop them with confidence.',
     ctaPrimary: 'Start a project',
-    ctaSecondary: 'See selected work',
-    proof: 'Millions of installs · iOS · Android · Web · Desktop',
     availability: 'Available for new projects',
     badge: 'One codebase for every screen',
     badgePlatforms: 'iOS · Android · Web · Desktop',
     phoneCaption: 'Smart home with more than 100 device types',
-    scrollHint: 'Scroll',
     phoneUi: {
       header: 'Home',
       scenes: ['Morning', 'Evening', 'Movie'],
@@ -56,10 +52,8 @@ export default {
   },
   stats: {
     ariaLabel: 'Professional product development with AI',
-    eyebrow: 'AI for Flutter teams',
-    heading: 'AI is changing software development. Where does your team start?',
+    heading: 'Work spec-driven with AI as a team.',
     intro: 'I bring a production-ready AI workflow into your Flutter team that developers can use confidently in their daily work.',
-    tools: 'Claude Code · Codex · ACT · CI/CD',
     steps: [
       {
         title: 'Develop from a spec',
@@ -278,7 +272,7 @@ export default {
       { href: '/datenschutz.html', label: 'Privacy policy' },
     ],
     copyright: '© 2026 Fluttera · Alexander Michels',
-    colophon: 'Statically built, hand-set in Fraunces, Switzer & IBM Plex Mono.',
+    colophon: 'Statically built, hand-set in Anton, Geist & IBM Plex Mono.',
     backToTop: 'Back to top',
   },
   legalPage: {

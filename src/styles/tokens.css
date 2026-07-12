@@ -21,9 +21,11 @@
   --hairline-on-dark: #2c2c2c;
   --green: #2e7d5b;
 
-  /* Typography — three voices, strictly separated jobs */
-  --font-display: 'Switzer', 'Helvetica Neue', Arial, sans-serif;
-  --font-body: 'Switzer', 'Helvetica Neue', Arial, sans-serif;
+  /* Typography — three voices, strictly separated jobs.
+     Display: Anton (free stand-in for ploy.ai's commercial FK Screamer) —
+     single weight 400, condensed, meant for uppercase settings. */
+  --font-display: 'Anton', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif;
+  --font-body: 'Geist', 'Helvetica Neue', Arial, sans-serif;
   --font-mono: 'IBM Plex Mono', 'SF Mono', Menlo, Consolas, monospace;
 
   --text-hero: clamp(3.5rem, 10vw, 8.8rem);

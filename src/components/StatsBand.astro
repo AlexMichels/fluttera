@@ -17,10 +17,8 @@ const icons = ['document', 'workflow', 'users']
 
   <div class="container ai-flow__inner">
     <div class="ai-flow__intro">
-      <p class="ai-flow__eyebrow mono reveal">{stats.eyebrow}</p>
-      <h2 class="ai-flow__heading reveal" style="--d:60ms">{stats.heading}</h2>
-      <p class="ai-flow__summary reveal" style="--d:120ms">{stats.intro}</p>
-      <span class="ai-flow__tools mono reveal" style="--d:160ms">{stats.tools}</span>
+      <h2 class="ai-flow__heading" data-scroll-fill>{stats.heading}</h2>
+      <p class="ai-flow__summary reveal" style="--d:80ms">{stats.intro}</p>
     </div>
 
     <ol class="ai-flow__steps">
@@ -60,20 +58,10 @@ const icons = ['document', 'workflow', 'users']
     text-align: center;
   }
 
-  .ai-flow__eyebrow {
-    margin-bottom: 1rem;
-    color: var(--blue);
-    letter-spacing: 0.16em;
-  }
-
   .ai-flow__heading {
     max-width: 13em;
     margin-inline: auto;
     font-size: clamp(2.8rem, 5.4vw, 5.4rem);
-    font-weight: 650;
-    line-height: 0.94;
-    letter-spacing: -0.065em;
-    text-transform: uppercase;
   }
 
   .ai-flow__summary {
@@ -82,13 +70,6 @@ const icons = ['document', 'workflow', 'users']
     color: #5f6268;
     font-size: clamp(1rem, 1.25vw, 1.12rem);
     line-height: 1.5;
-  }
-
-  .ai-flow__tools {
-    display: inline-block;
-    margin-top: 1rem;
-    color: var(--ink);
-    letter-spacing: 0.11em;
   }
 
   .ai-flow__steps {
