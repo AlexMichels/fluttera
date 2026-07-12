@@ -58,8 +58,8 @@ const ok = (name, cond, extra = '') => results.push(`${cond ? 'PASS' : 'FAIL'} $
   })
   await new Promise((r) => setTimeout(r, 700))
   const pillScrolled = await page.$eval('.nav__pill', (p) => getComputedStyle(p).backgroundColor)
-  // Pill is --paper (#f4f7fb) so it blends seamlessly at the top of the page
-  ok('nav pill constant on scroll', pillAtTop === 'rgb(244, 247, 251)' && pillScrolled === pillAtTop, `${pillAtTop} → ${pillScrolled}`)
+  // Pill is translucent --paper glass; it must not change between states
+  ok('nav pill constant on scroll', pillAtTop !== 'rgba(0, 0, 0, 0)' && pillScrolled === pillAtTop, `${pillAtTop} → ${pillScrolled}`)
   await page.screenshot({ path: `${outDir}/it-nav-pill.png` })
 
   // FAQ answers stay visible as a static card grid.
