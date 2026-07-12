@@ -5,29 +5,29 @@
 
 :root {
   /* Colour — two-colour print system: paper, ink, one Reflex-blue spot colour */
-  --paper: #f5f3ec;
-  --paper-warm: #efece2;
-  --ink: #191a1e;
-  --ink-soft: #565660;
-  --blue: #2743cd;
-  --blue-deep: #1b2fa4;
-  --blue-wash: #e3e7fa;
-  --midnight: #101430;
-  --midnight-deep: #0b0e24;
-  --paper-on-dark: #edebe2;
-  --soft-on-dark: rgba(237, 235, 226, 0.72);
-  --blue-on-dark: #a8b6f8;
-  --hairline: #d9d5c9;
-  --hairline-on-dark: #2a2f52;
+  --paper: #f4f7fb;
+  --paper-warm: #ffffff;
+  --ink: #222326;
+  --ink-soft: #7d8794;
+  --blue: #2854bd;
+  --blue-deep: #1d46aa;
+  --blue-wash: #dce8ff;
+  --midnight: #050505;
+  --midnight-deep: #000000;
+  --paper-on-dark: #f7f8fa;
+  --soft-on-dark: rgba(247, 248, 250, 0.68);
+  --blue-on-dark: #d9e6ff;
+  --hairline: #aeb3b8;
+  --hairline-on-dark: #2c2c2c;
   --green: #2e7d5b;
 
   /* Typography — three voices, strictly separated jobs */
-  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-display: 'Switzer', 'Helvetica Neue', Arial, sans-serif;
   --font-body: 'Switzer', 'Helvetica Neue', Arial, sans-serif;
   --font-mono: 'IBM Plex Mono', 'SF Mono', Menlo, Consolas, monospace;
 
-  --text-hero: clamp(2.9rem, 8vw, 6rem);
-  --text-h2: clamp(2.1rem, 4.6vw, 3.6rem);
+  --text-hero: clamp(3.5rem, 10vw, 8.8rem);
+  --text-h2: clamp(2.35rem, 4.6vw, 4rem);
   --text-h3: clamp(1.25rem, 2vw, 1.6rem);
   --text-lead: clamp(1.06rem, 1.4vw, 1.25rem);
   --text-body: 1.0625rem;
@@ -36,15 +36,15 @@
   --track-mono: 0.08em;
 
   /* Layout */
-  --container: 78rem;
-  --gutter: clamp(1.25rem, 5vw, 5rem);
-  --section-pad: clamp(4.5rem, 10vw, 8.5rem);
+  --container: 82rem;
+  --gutter: clamp(1.25rem, 5vw, 4.5rem);
+  --section-pad: clamp(5rem, 9vw, 8rem);
 
   /* Shape — print-sharp corners, flat offset shadows (no blur) */
-  --radius-s: 3px;
-  --radius-m: 6px;
-  --shadow-offset: 4px 4px 0 rgba(22, 23, 29, 0.12);
-  --shadow-offset-blue: 4px 4px 0 rgba(39, 67, 205, 0.28);
+  --radius-s: 14px;
+  --radius-m: 22px;
+  --shadow-offset: 0 18px 45px rgba(30, 45, 70, 0.12);
+  --shadow-offset-blue: 0 18px 45px rgba(39, 67, 205, 0.18);
 
   /* Motion — one easing family */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);

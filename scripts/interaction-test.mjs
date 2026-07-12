@@ -5,9 +5,13 @@ import puppeteer from 'puppeteer-core'
 
 const outDir = process.argv[2] ?? 'shots'
 const base = process.argv[3] ?? 'http://localhost:4321'
-const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+const CHROME = process.env.CHROME_PATH ?? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 
-const browser = await puppeteer.launch({ executablePath: CHROME, headless: 'new' })
+const browser = await puppeteer.launch({
+  executablePath: CHROME,
+  headless: 'new',
+  args: process.env.CI ? ['--no-sandbox', '--disable-setuid-sandbox'] : [],
+})
 const results = []
 const ok = (name, cond, extra = '') => results.push(`${cond ? 'PASS' : 'FAIL'} ${name}${extra ? ' — ' + extra : ''}`)
 
@@ -19,6 +23,14 @@ const ok = (name, cond, extra = '') => results.push(`${cond ? 'PASS' : 'FAIL'} $
   page.on('console', (m) => m.type() === 'error' && errors.push(m.text()))
   await page.setViewport({ width: 1440, height: 900 })
   await page.goto(`${base}/`, { waitUntil: 'networkidle0' })
+
+  const homeStructure = await page.evaluate(() => ({
+    lang: document.documentElement.lang,
+    h1: document.querySelectorAll('h1').length,
+    sections: [...document.querySelectorAll('main section')].length,
+    testSections: document.querySelectorAll('main [data-testid]').length,
+  }))
+  ok('DE home structure', homeStructure.lang === 'de' && homeStructure.h1 === 1 && homeStructure.sections >= 8 && homeStructure.testSections >= 7, JSON.stringify(homeStructure))
 
   // Calendly CTAs are real links
   const hrefs = await page.$$eval('[data-calendly]', (as) => as.map((a) => a.href))
@@ -33,10 +45,15 @@ const ok = (name, cond, extra = '') => results.push(`${cond ? 'PASS' : 'FAIL'} $
   })
   ok('lang toggle hash', enHref.endsWith('/en/#faq'), enHref)
 
-  // Nav dark inversion over contact (scroll past the anchor offset so the
+  await page.goto(`${base}/en/`, { waitUntil: 'networkidle0' })
+  const enLocale = await page.evaluate(() => ({ lang: document.documentElement.lang, heading: document.querySelector('h1')?.textContent }))
+  ok('English locale renders', enLocale.lang === 'en' && enLocale.heading?.includes('Flutter apps for complex products.'))
+  await page.goto(`${base}/`, { waitUntil: 'networkidle0' })
+
+  // Nav dark inversion over the services section (scroll past the anchor offset so the
   // dark section actually sits underneath the nav bar)
   await page.evaluate(() => {
-    const top = document.querySelector('#contact').getBoundingClientRect().top + window.scrollY
+    const top = document.querySelector('#services').getBoundingClientRect().top + window.scrollY
     window.scrollTo({ top: top + 200, behavior: 'instant' })
   })
   await new Promise((r) => setTimeout(r, 700))
@@ -53,13 +70,11 @@ const ok = (name, cond, extra = '') => results.push(`${cond ? 'PASS' : 'FAIL'} $
   const navLight = await page.$eval('[data-nav]', (n) => !n.classList.contains('nav--dark') && n.classList.contains('nav--scrolled'))
   ok('nav light + scrolled', navLight)
 
-  // FAQ opens
+  // FAQ answers stay visible as a static card grid.
   await page.evaluate(() => document.querySelector('#faq').scrollIntoView())
-  await page.click('.faq-item__q')
-  await new Promise((r) => setTimeout(r, 500))
-  const faqOpen = await page.$eval('.faq-item', (d) => d.open)
-  ok('faq opens', faqOpen)
-  await page.screenshot({ path: `${outDir}/it-faq-open.png` })
+  const faqVisible = await page.$$eval('.faq-item__a', (answers) => answers.length === 8 && answers.every((answer) => getComputedStyle(answer).display !== 'none'))
+  ok('faq grid visible', faqVisible)
+  await page.screenshot({ path: `${outDir}/it-faq-grid.png` })
 
   ok('no console errors (desktop)', errors.length === 0, errors.slice(0, 3).join(' | '))
   await page.close()
@@ -79,8 +94,17 @@ const ok = (name, cond, extra = '') => results.push(`${cond ? 'PASS' : 'FAIL'} $
   await page.click('.nav__link')
   await new Promise((r) => setTimeout(r, 700))
   const closed = await page.$eval('[data-nav]', (n) => !n.classList.contains('nav--open'))
-  const scrolled = await page.evaluate(() => window.scrollY > 100)
-  ok('menu closes + navigates on link', closed && scrolled, `scrollY>100: ${scrolled}`)
+  const navigation = await page.evaluate(() => ({ scrolled: window.scrollY > 100, hash: location.hash }))
+  ok('menu closes + navigates on link', closed && navigation.scrolled && navigation.hash.length > 1, JSON.stringify(navigation))
+  await page.close()
+}
+
+// —— Legacy legal URLs ——
+for (const path of ['/impressum.html', '/datenschutz.html']) {
+  const page = await browser.newPage()
+  const response = await page.goto(`${base}${path}`, { waitUntil: 'networkidle0' })
+  const hasMain = await page.$('main')
+  ok(`legacy URL ${path}`, response?.ok() && Boolean(hasMain), `status=${response?.status()}`)
   await page.close()
 }
 
@@ -108,12 +132,11 @@ const ok = (name, cond, extra = '') => results.push(`${cond ? 'PASS' : 'FAIL'} $
   await page.setViewport({ width: 1440, height: 900 })
   await page.goto(`${base}/`, { waitUntil: 'networkidle0' })
   await new Promise((r) => setTimeout(r, 300))
-  const statsVisible = await page.evaluate(() => {
-    const el = document.querySelector('.stats__item')
+  const workflowVisible = await page.evaluate(() => {
+    const el = document.querySelector('.ai-flow__step')
     return getComputedStyle(el).opacity === '1'
   })
-  const countSet = await page.$eval('[data-count]', (el) => el.textContent)
-  ok('reduced motion: content visible, count set', statsVisible && countSet === '100', `count=${countSet}`)
+  ok('reduced motion: AI workflow visible', workflowVisible)
   await page.close()
 }
 

@@ -9,9 +9,6 @@ function setupReveals() {
   const targets = document.querySelectorAll('.reveal, .rule-draw')
   if (!('IntersectionObserver' in window) || reducedMotion.matches) {
     targets.forEach((el) => el.classList.add('revealed'))
-    document.querySelectorAll('[data-count]').forEach((el) => {
-      el.textContent = el.dataset.count
-    })
     return
   }
   const io = new IntersectionObserver(
@@ -19,27 +16,12 @@ function setupReveals() {
       for (const entry of entries) {
         if (!entry.isIntersecting) continue
         entry.target.classList.add('revealed')
-        entry.target.querySelectorAll('[data-count]').forEach(countUp)
         io.unobserve(entry.target)
       }
     },
     { threshold: 0.15, rootMargin: '0px 0px -40px 0px' },
   )
   targets.forEach((el) => io.observe(el))
-}
-
-function countUp(el) {
-  const end = parseInt(el.dataset.count, 10)
-  if (Number.isNaN(end)) return
-  const dur = 600
-  const start = performance.now()
-  const ease = (t) => 1 - Math.pow(1 - t, 4)
-  function frame(now) {
-    const t = Math.min((now - start) / dur, 1)
-    el.textContent = String(Math.round(ease(t) * end))
-    if (t < 1) requestAnimationFrame(frame)
-  }
-  requestAnimationFrame(frame)
 }
 
 /* ————— Nav: scrolled state, dark-section inversion, mobile menu ————— */

@@ -1,93 +1,192 @@
 ---
+import FeatureIcon from './FeatureIcon.astro'
+
 interface Props {
   t: Record<string, any>
 }
 
 const { t } = Astro.props
 const { stats } = t
+const icons = ['document', 'workflow', 'users']
 ---
 
-<section class="stats" data-theme="dark" aria-label={stats.ariaLabel}>
-  <div class="container">
-    <div class="stats__grid">
+<section class="ai-flow" aria-label={stats.ariaLabel} data-testid="ai-workflow">
+  <div class="ai-flow__shape" aria-hidden="true">
+    <span></span><span></span><span></span>
+  </div>
+
+  <div class="container ai-flow__inner">
+    <div class="ai-flow__intro">
+      <p class="ai-flow__eyebrow mono reveal">{stats.eyebrow}</p>
+      <h2 class="ai-flow__heading reveal" style="--d:60ms">{stats.heading}</h2>
+      <p class="ai-flow__summary reveal" style="--d:120ms">{stats.intro}</p>
+      <span class="ai-flow__tools mono reveal" style="--d:160ms">{stats.tools}</span>
+    </div>
+
+    <ol class="ai-flow__steps">
       {
-        stats.items.map((item: any, i: number) => (
-          <div class="stats__item reveal" style={`--d:${i * 90}ms`}>
-            <span class="stats__value">{/^\d+$/.test(item.value) ? <span data-count={item.value}>{item.value}</span> : item.value}{item.suffix ? <span class="stats__suffix">{item.suffix}</span> : ''}</span>
-            <span class="stats__label mono">{item.label}</span>
-            <p class="stats__detail">{item.detail}</p>
-          </div>
+        stats.steps.map((step: any, i: number) => (
+          <li class="ai-flow__step reveal" style={`--d:${180 + i * 70}ms`}>
+            <span class="ai-flow__icon"><FeatureIcon name={icons[i]} /></span>
+            <div>
+              <h3>{step.title}</h3>
+              <p>{step.body}</p>
+            </div>
+          </li>
         ))
       }
-    </div>
-    <p class="stats__nda mono reveal" style="--d:300ms">{stats.ndaNote}</p>
+    </ol>
   </div>
 </section>
 
 <style>
-  .stats {
-    padding-block: clamp(3.5rem, 8vw, 6rem);
+  .ai-flow {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding-block: clamp(3.75rem, 6vw, 5.75rem);
+    background: #f2f1ef;
+    color: var(--ink);
   }
 
-  .stats__grid {
+  .ai-flow__inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  .ai-flow__intro {
+    width: min(100%, 66rem);
+    margin: 0 auto clamp(2.5rem, 4vw, 3.75rem);
+    text-align: center;
+  }
+
+  .ai-flow__eyebrow {
+    margin-bottom: 1rem;
+    color: var(--blue);
+    letter-spacing: 0.16em;
+  }
+
+  .ai-flow__heading {
+    max-width: 13em;
+    margin-inline: auto;
+    font-size: clamp(2.8rem, 5.4vw, 5.4rem);
+    font-weight: 650;
+    line-height: 0.94;
+    letter-spacing: -0.065em;
+    text-transform: uppercase;
+  }
+
+  .ai-flow__summary {
+    max-width: 43rem;
+    margin: 1.5rem auto 0;
+    color: #5f6268;
+    font-size: clamp(1rem, 1.25vw, 1.12rem);
+    line-height: 1.5;
+  }
+
+  .ai-flow__tools {
+    display: inline-block;
+    margin-top: 1rem;
+    color: var(--ink);
+    letter-spacing: 0.11em;
+  }
+
+  .ai-flow__steps {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(1.5rem, 4vw, 3rem);
+    list-style: none;
+    padding: 1.5rem;
+    border: 1px solid #e0dfdc;
+    border-radius: 0.35rem;
+    background: #fff;
   }
 
-  .stats__item {
+  .ai-flow__step {
     display: flex;
+    min-width: 0;
+    min-height: 13rem;
     flex-direction: column;
-    gap: 0.55rem;
+    justify-content: space-between;
+    padding: 0.25rem clamp(1.25rem, 2.4vw, 2.5rem) 0.5rem 0;
   }
 
-  .stats__item + .stats__item {
-    border-left: 1px solid var(--hairline-on-dark);
-    padding-left: clamp(1.5rem, 4vw, 3rem);
+  .ai-flow__step + .ai-flow__step {
+    padding-left: clamp(1.25rem, 2.4vw, 2.5rem);
+    border-left: 1px solid #deddda;
   }
 
-  .stats__value {
-    font-family: var(--font-display);
-    font-optical-sizing: auto;
-    font-variation-settings: 'SOFT' 0, 'WONK' 0;
-    font-weight: 540;
-    font-variant-numeric: lining-nums tabular-nums;
-    font-size: clamp(3rem, 6.5vw, 5.5rem);
-    line-height: 1;
-    letter-spacing: -0.02em;
+  .ai-flow__icon {
+    display: grid;
+    place-items: center;
+    width: 2.8rem;
+    height: 2.8rem;
+    margin-bottom: 2.25rem;
+    border-radius: 0.65rem;
+    background: #1c1d20;
+    color: #fff;
   }
 
-  .stats__suffix {
-    color: var(--blue-on-dark);
+  .ai-flow__step h3 {
+    margin-bottom: 0.65rem;
+    font-size: clamp(1.2rem, 1.5vw, 1.5rem);
+    line-height: 1.08;
+    letter-spacing: -0.035em;
   }
 
-  .stats__label {
-    color: var(--blue-on-dark);
+  .ai-flow__step p {
+    max-width: 27em;
+    color: #666970;
+    font-size: 0.96rem;
+    line-height: 1.5;
   }
 
-  .stats__detail {
-    color: var(--soft-on-dark);
-    font-size: var(--text-small);
-    max-width: 24em;
+  .ai-flow__shape {
+    position: absolute;
+    z-index: 0;
+    left: 50%;
+    top: 1.25rem;
+    width: clamp(10rem, 17vw, 16rem);
+    aspect-ratio: 1;
+    opacity: 0.72;
+    transform: translateX(-50%) rotate(12deg);
   }
 
-  .stats__nda {
-    margin-top: clamp(2.5rem, 5vw, 4rem);
-    padding-top: 1.1rem;
-    border-top: 1px solid var(--hairline-on-dark);
-    color: var(--soft-on-dark);
+  .ai-flow__shape span {
+    position: absolute;
+    width: 66%;
+    aspect-ratio: 1;
+    border-radius: 46% 54% 48% 52%;
+    background: #a4e83f;
+    box-shadow: inset 0.7rem 0.9rem 1.4rem rgba(255, 255, 255, 0.24);
   }
+
+  .ai-flow__shape span:nth-child(1) { left: 0; top: 0; }
+  .ai-flow__shape span:nth-child(2) { right: 0; top: 0; }
+  .ai-flow__shape span:nth-child(3) { left: 18%; bottom: 0; }
 
   @media (max-width: 47.99rem) {
-    .stats__grid {
-      grid-template-columns: 1fr;
+    .ai-flow__heading {
+      font-size: clamp(2.5rem, 12vw, 4.25rem);
     }
 
-    .stats__item + .stats__item {
+    .ai-flow__steps {
+      grid-template-columns: 1fr;
+      padding: 1.25rem;
+    }
+
+    .ai-flow__step,
+    .ai-flow__step + .ai-flow__step {
+      min-height: 0;
+      padding: 1rem 0 1.4rem;
       border-left: 0;
-      padding-left: 0;
-      border-top: 1px solid var(--hairline-on-dark);
-      padding-top: 1.5rem;
+    }
+
+    .ai-flow__step + .ai-flow__step {
+      border-top: 1px solid #deddda;
+    }
+
+    .ai-flow__icon {
+      margin-bottom: 2rem;
     }
   }
 </style>

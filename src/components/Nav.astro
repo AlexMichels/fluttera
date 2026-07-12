@@ -1,4 +1,6 @@
 ---
+import CalendlyCta from './CalendlyCta.astro'
+
 interface Props {
   t: Record<string, any>
   /** Prefix for section anchors: '' on the home page itself, '/' or '/en/' on subpages */
@@ -10,9 +12,9 @@ const { t, anchorBase = '', homeHref } = Astro.props
 const { nav } = t
 ---
 
-<header class="nav" data-nav>
+<header class="nav" data-nav data-testid="site-nav">
   <div class="container nav__inner">
-    <a class="nav__brand" href={homeHref} aria-label="Fluttera — Home">Fluttera</a>
+    <a class="nav__brand" href={homeHref} aria-label="Fluttera Home">Fluttera</a>
 
     <nav class="nav__menu" id="site-menu" data-menu aria-label={nav.menuLabel}>
       <ul class="nav__list">
@@ -29,9 +31,6 @@ const { nav } = t
           ))
         }
       </ul>
-      <a class="btn btn--primary nav__menu-cta" href="https://calendly.com/fluttera/30min" target="_blank" rel="noopener" data-calendly>
-        {nav.cta}
-      </a>
     </nav>
 
     <div class="nav__meta">
@@ -41,13 +40,13 @@ const { nav } = t
             <>
               <span class="nav__lang-current" aria-current="true">DE</span>
               <span class="nav__lang-sep" aria-hidden="true">/</span>
-              <a href={nav.langSwitch.href} data-lang-switch aria-label={nav.langSwitch.ariaLabel} lang="en">
+              <a href={nav.langSwitch.href} data-lang-switch data-testid="language-toggle" aria-label={nav.langSwitch.ariaLabel} lang="en">
                 EN
               </a>
             </>
           ) : (
             <>
-              <a href={nav.langSwitch.href} data-lang-switch aria-label={nav.langSwitch.ariaLabel} lang="de">
+              <a href={nav.langSwitch.href} data-lang-switch data-testid="language-toggle" aria-label={nav.langSwitch.ariaLabel} lang="de">
                 DE
               </a>
               <span class="nav__lang-sep" aria-hidden="true">/</span>
@@ -56,13 +55,14 @@ const { nav } = t
           )
         }
       </span>
-      <a class="btn btn--primary nav__cta" href="https://calendly.com/fluttera/30min" target="_blank" rel="noopener" data-calendly>
-        {nav.cta}
-      </a>
+      <div class="nav__cta-wrap">
+        <CalendlyCta label={nav.cta} testId="nav-cta" />
+      </div>
       <button
         class="nav__burger"
         type="button"
         data-menu-toggle
+        data-testid="menu-toggle"
         aria-expanded="false"
         aria-controls="site-menu"
         aria-label={nav.openMenu}
@@ -81,8 +81,9 @@ const { nav } = t
     position: fixed;
     inset: 0 0 auto 0;
     z-index: 50;
-    height: 4rem;
-    background: var(--paper);
+    height: 4.5rem;
+    background: transparent;
+    color: #fff;
     border-bottom: 1px solid transparent;
     transition:
       background-color var(--dur-fast) var(--ease),
@@ -91,23 +92,23 @@ const { nav } = t
   }
 
   .nav.nav--scrolled {
+    background: rgba(244, 247, 251, 0.96);
+    color: var(--ink);
     border-bottom-color: var(--hairline);
+    backdrop-filter: blur(12px);
   }
 
   .nav__inner {
     height: 100%;
     display: flex;
     align-items: center;
-    gap: 2rem;
+    gap: clamp(1.25rem, 2.5vw, 2.75rem);
   }
 
   .nav__brand {
-    font-family: var(--font-display);
-    font-optical-sizing: auto;
-    font-variation-settings: 'SOFT' 0, 'WONK' 0;
     font-weight: 600;
-    font-size: 1.4rem;
-    letter-spacing: -0.01em;
+    font-size: 1.35rem;
+    letter-spacing: -0.045em;
     text-decoration: none;
     line-height: 1;
   }
@@ -122,15 +123,16 @@ const { nav } = t
     display: flex;
     list-style: none;
     padding: 0;
-    gap: 1.6rem;
+    gap: clamp(1rem, 1.8vw, 2rem);
   }
 
   .nav__link {
-    font-size: 0.9375rem;
+    font-size: 0.9rem;
     font-weight: 500;
     text-decoration: none;
     position: relative;
     padding-bottom: 0.3rem;
+    white-space: nowrap;
   }
 
   .nav__link::after {
@@ -153,24 +155,20 @@ const { nav } = t
     display: none;
   }
 
-  .nav__menu-cta {
-    display: none;
-  }
-
   .nav__meta {
     display: flex;
     align-items: center;
-    gap: 1.4rem;
+    gap: 1.25rem;
   }
 
   .nav__lang a {
-    color: var(--ink-soft);
+    color: rgba(255, 255, 255, 0.66);
     text-decoration: none;
     transition: color var(--dur-fast) var(--ease);
   }
 
   .nav__lang a:hover {
-    color: var(--blue);
+    color: #fff;
   }
 
   .nav__lang-current {
@@ -179,13 +177,31 @@ const { nav } = t
   }
 
   .nav__lang-sep {
-    color: var(--hairline);
+    color: rgba(255, 255, 255, 0.34);
     margin-inline: 0.15rem;
   }
 
-  .nav__cta {
-    padding: 0.7rem 1.15rem;
-    font-size: 0.9375rem;
+  .nav__cta-wrap :global(.btn) {
+    padding: 0.75rem 1.2rem;
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+
+  .nav:not(.nav--scrolled) .nav__cta-wrap :global(.btn) {
+    background: #fff;
+    color: var(--ink);
+  }
+
+  .nav.nav--scrolled .nav__lang a {
+    color: var(--ink-soft);
+  }
+
+  .nav.nav--scrolled .nav__lang-current {
+    color: var(--blue);
+  }
+
+  .nav.nav--scrolled .nav__lang-sep {
+    color: var(--hairline);
   }
 
   .nav__burger {
@@ -209,9 +225,14 @@ const { nav } = t
 
   /* Dark inversion while a midnight section passes under the nav */
   .nav.nav--dark {
-    background: var(--midnight);
+    background: rgba(5, 5, 5, 0.92);
     color: var(--paper-on-dark);
     border-bottom-color: var(--hairline-on-dark);
+  }
+
+  .nav.nav--dark:not(.nav--scrolled) {
+    background: transparent;
+    border-bottom-color: transparent;
   }
 
   .nav.nav--dark .nav__link::after {
@@ -227,10 +248,16 @@ const { nav } = t
     color: var(--blue-on-dark);
   }
 
-  @media (max-width: 61.99rem) {
+  @media (min-width: 74rem) {
+    .nav__list li:nth-child(n + 5) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 73.99rem) {
     .nav__menu {
       position: fixed;
-      inset: 4rem 0 0 0;
+      inset: 4.5rem 0 0 0;
       background: var(--paper);
       color: var(--ink);
       flex-direction: column;
@@ -266,9 +293,7 @@ const { nav } = t
       align-items: baseline;
       gap: 1rem;
       font-family: var(--font-display);
-      font-optical-sizing: auto;
-      font-variation-settings: 'SOFT' 0, 'WONK' 0;
-      font-weight: 560;
+      font-weight: 600;
       font-size: clamp(1.8rem, 6vw, 2.6rem);
       padding-block: 0.9rem;
     }
@@ -283,12 +308,7 @@ const { nav } = t
       font-size: 0.8125rem;
     }
 
-    .nav__menu-cta {
-      display: inline-flex;
-      margin-top: 2rem;
-    }
-
-    .nav__cta {
+    .nav__cta-wrap {
       display: none;
     }
 
@@ -306,6 +326,20 @@ const { nav } = t
 
     :global(html.menu-open) {
       overflow: hidden;
+    }
+  }
+
+  @media (max-width: 38rem) {
+    .nav__lang {
+      display: none;
+    }
+
+    .nav__inner {
+      gap: 1rem;
+    }
+
+    .nav__meta {
+      margin-left: auto;
     }
   }
 </style>

@@ -5,9 +5,13 @@ import puppeteer from 'puppeteer-core'
 
 const outDir = process.argv[2] ?? 'shots'
 const base = process.argv[3] ?? 'http://localhost:4321'
-const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+const CHROME = process.env.CHROME_PATH ?? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 
-const browser = await puppeteer.launch({ executablePath: CHROME, headless: 'new' })
+const browser = await puppeteer.launch({
+  executablePath: CHROME,
+  headless: 'new',
+  args: process.env.CI ? ['--no-sandbox', '--disable-setuid-sandbox'] : [],
+})
 
 const shots = [
   { name: 'de-desktop', url: `${base}/`, width: 1440, height: 900 },
@@ -26,7 +30,6 @@ for (const s of shots) {
   // and scroll through the page so lazy images load before capture.
   await page.evaluate(() => {
     document.querySelectorAll('.reveal, .rule-draw').forEach((el) => el.classList.add('revealed'))
-    document.querySelectorAll('[data-count]').forEach((el) => (el.textContent = el.dataset.count))
     document.querySelectorAll('img[loading="lazy"]').forEach((img) => (img.loading = 'eager'))
   })
   await page.evaluate(async () => {
