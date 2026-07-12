@@ -11,13 +11,16 @@ const { hero } = t
 
 <section class="hero" id="top" data-testid="hero" data-theme="dark">
   <div class="hero__scene" aria-hidden="true">
-    <video class="hero__video" autoplay muted loop playsinline preload="metadata">
-      <source src="/assets/img/demo-screen.mp4" type="video/mp4" />
-    </video>
-    <div class="hero__desk"></div>
-    <div class="hero__balloon hero__balloon--one"><span>Fluttera</span></div>
-    <div class="hero__balloon hero__balloon--two"><span>»</span></div>
-    <div class="hero__balloon hero__balloon--three"><span>Flutter</span></div>
+    <img
+      class="hero__image"
+      src="/assets/img/fluttera-office-hero.jpg"
+      alt=""
+      width="3840"
+      height="2160"
+      loading="eager"
+      decoding="async"
+      fetchpriority="high"
+    />
   </div>
 
   <div class="container hero__inner">
@@ -59,98 +62,24 @@ const { hero } = t
     position: absolute;
     inset: 0;
     z-index: -1;
-    background: rgba(3, 6, 16, 0.66);
+    background: rgba(3, 6, 16, 0.56);
   }
 
-  .hero__scene,
-  .hero__video {
+  .hero__scene {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
-  }
-
-  .hero__scene {
     z-index: -2;
     overflow: hidden;
     background: #111a39;
   }
 
-  .hero__video {
+  .hero__image {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    filter: blur(12px) saturate(0.65);
-    opacity: 0.34;
-    transform: scale(1.08);
-  }
-
-  .hero__desk {
-    position: absolute;
-    left: -4%;
-    right: -4%;
-    bottom: -10%;
-    height: 39%;
-    background: #18130f;
-    opacity: 0.84;
-    transform: rotate(-2deg);
-  }
-
-  .hero__balloon {
-    position: absolute;
-    display: grid;
-    place-items: center;
-    aspect-ratio: 1.35;
-    border-radius: 52% 48% 50% 46%;
-    color: rgba(255, 255, 255, 0.9);
-    font-weight: 600;
-    letter-spacing: -0.04em;
-    box-shadow: inset 1.1rem 1.5rem 2rem rgba(255, 255, 255, 0.16), 0 2rem 5rem rgba(0, 0, 0, 0.3);
-    opacity: 0.88;
-  }
-
-  .hero__balloon::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    top: 98%;
-    width: 1px;
-    height: 44vh;
-    background: rgba(255, 255, 255, 0.24);
-  }
-
-  .hero__balloon--one {
-    width: clamp(20rem, 34vw, 42rem);
-    right: -7%;
-    top: 7%;
-    background: #2854bd;
-    transform: rotate(7deg);
-  }
-
-  .hero__balloon--one span {
-    font-size: clamp(2.8rem, 6vw, 6rem);
-  }
-
-  .hero__balloon--two {
-    width: clamp(12rem, 21vw, 25rem);
-    left: -5%;
-    top: 7%;
-    background: #08a982;
-    transform: rotate(-9deg);
-  }
-
-  .hero__balloon--two span {
-    font-size: clamp(4rem, 8vw, 8rem);
-  }
-
-  .hero__balloon--three {
-    width: clamp(12rem, 19vw, 22rem);
-    right: 8%;
-    bottom: 5%;
-    background: #bb4abf;
-    transform: rotate(-5deg);
-  }
-
-  .hero__balloon--three span {
-    font-size: clamp(1.5rem, 3vw, 3rem);
+    object-position: center;
   }
 
   .hero__inner {
@@ -254,21 +183,7 @@ const { hero } = t
       line-height: 0.94;
     }
 
-    .hero__balloon--one {
-      width: 24rem;
-      right: -11rem;
-      top: 10%;
-    }
-
-    .hero__balloon--two {
-      width: 15rem;
-      left: -7rem;
-      top: 13%;
-    }
-
-    .hero__balloon--three {
-      display: none;
-    }
+    .hero__image { object-position: 50% center; }
   }
 
   @media (max-width: 30rem) {
@@ -286,9 +201,4 @@ const { hero } = t
     }
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .hero__video {
-      display: none;
-    }
-  }
 </style>

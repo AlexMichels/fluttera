@@ -121,7 +121,7 @@ export default {
   work: {
     id: 'work',
     eyebrow: 'Referenzen',
-    heading: 'Produkte, die heute erfolgreich im Einsatz sind.',
+    heading: 'Unsere Erfolgsgeschichte: große Produkte, erfolgreich umgesetzt.',
     intro: 'Eine zugelassene DiGA, Europas größte Smart-Home-App und weitere Produkte für den täglichen Einsatz. Ich habe über Jahre in internationalen Teams an zentralen, technisch anspruchsvollen Bereichen gearbeitet. Teilweise in führender Rolle.',
     cards: [
       {

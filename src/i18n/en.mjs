@@ -121,7 +121,7 @@ export default {
   work: {
     id: 'work',
     eyebrow: 'Selected work',
-    heading: 'Products that are successfully in use today.',
+    heading: 'Our track record: major products, successfully delivered.',
     intro: 'An approved DiGA, Europe’s largest smart-home app and other products used every day. I have spent years working on central, technically demanding areas in international teams, sometimes in a leading role.',
     cards: [
       {
