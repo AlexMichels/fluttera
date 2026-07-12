@@ -106,11 +106,6 @@ export default {
         tags: [],
       },
     ],
-    banner: {
-      eyebrow: 'How I work',
-      title: 'More speed. Full responsibility.',
-      body: 'Modern tools speed up delivery. Architecture, reviews and technical decisions remain my responsibility. You receive tested code through your own CI/CD pipeline.',
-    },
   },
   work: {
     id: 'work',

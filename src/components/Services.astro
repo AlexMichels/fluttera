@@ -38,11 +38,6 @@ const small = services.cards.filter((c: any) => c.size === 'small')
           </article>
         ))
       }
-      <aside class="svc-banner reveal">
-        <span class="svc-banner__eyebrow mono">{services.banner.eyebrow}</span>
-        <h3 class="svc-banner__title">{services.banner.title}</h3>
-        <p class="svc-banner__body">{services.banner.body}</p>
-      </aside>
     </div>
   </div>
 </section>
@@ -106,35 +101,6 @@ const small = services.cards.filter((c: any) => c.size === 'small')
     font-size: 0.6875rem;
   }
 
-  .svc-banner {
-    grid-column: 1 / -1;
-    background: #0b0b0b;
-    color: #fff;
-    border: 1px solid var(--hairline-on-dark);
-    border-radius: var(--radius-s);
-    padding: clamp(1.6rem, 4vw, 2.6rem);
-    display: grid;
-    grid-template-columns: minmax(0, .8fr) minmax(0, 1.5fr);
-    gap: 0.6rem 3rem;
-    align-items: start;
-    margin-top: 1.5rem;
-  }
-
-  .svc-banner__eyebrow {
-    grid-column: 1 / -1;
-    color: rgba(255, 255, 255, 0.75);
-  }
-
-  .svc-banner__title {
-    font-size: clamp(1.2rem, 2vw, 1.45rem);
-    max-width: 14em;
-  }
-
-  .svc-banner__body {
-    color: rgba(255, 255, 255, 0.88);
-    max-width: 44em;
-  }
-
   @media (max-width: 63.99rem) {
     .svc--lg {
       grid-column: 1 / -1;
@@ -143,10 +109,6 @@ const small = services.cards.filter((c: any) => c.size === 'small')
 
     .svc--sm {
       grid-column: span 2;
-    }
-
-    .svc-banner {
-      grid-template-columns: 1fr;
     }
   }
 

@@ -106,11 +106,6 @@ export default {
         tags: [],
       },
     ],
-    banner: {
-      eyebrow: 'Arbeitsweise',
-      title: 'Mehr Tempo. Volle Verantwortung.',
-      body: 'Moderne Werkzeuge beschleunigen die Umsetzung. Architektur, Reviews und technische Entscheidungen bleiben meine Verantwortung. Sie erhalten getesteten Code über Ihre eigene CI/CD.',
-    },
   },
   work: {
     id: 'work',
